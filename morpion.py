@@ -15,15 +15,35 @@ appui = False
 caract = 'O'
 pygame.init()
 
-def detect_win(list1, list2, list3, caract):
-    if (list1[0] == caract and list2[1] == caract and list3[2] == caract):
-        print("il semblerais que " + str(caract) + " a gagner")
+def check_win(list1, list2, list3):
+    if ('O' not in list1 and 'X' in list1 and ' ' not in list1):
         return True
-    if (list1[2] == caract and list2[1] == caract and list3[0] == caract):
-        print("il semblerais que " + str(caract) + " a gagner")
+    if ('X' not in list1 and 'O' in list1 and ' ' not in list1):
         return True
-    for i in range(3):
-        if (list1[i] == caract and list2[i] == caract and list3[i] == caract):
+    if ('O' not in list2 and 'X' in list2 and ' ' not in list2):
+        return True
+    if ('X' not in list2 and 'O' in list2 and ' ' not in list2):
+        return True
+    if ('O' not in list3 and 'X' in list3 and ' ' not in list3):
+        return True
+    if ('X' not in list3 and 'O' in list3 and ' ' not in list3):
+        return True
+    return False
+
+def detect_win(list1, list2, list3):
+    local_caract = "OX"
+    for caract in local_caract:
+        if (list1[0] == caract and list2[1] == caract and list3[2] == caract):
+            print("il semblerais que " + str(caract) + " a gagner")
+            return True
+        if (list1[2] == caract and list2[1] == caract and list3[0] == caract):
+            print("il semblerais que " + str(caract) + " a gagner")
+            return True
+        for i in range(3):
+            if (list1[i] == caract and list2[i] == caract and list3[i] == caract):
+                print("il semblerais que " + str(caract) + " a gagner")
+                return True
+        if check_win(list1, list2, list3) == True:
             print("il semblerais que " + str(caract) + " a gagner")
             return True
     return False
@@ -87,11 +107,11 @@ def game_loop(fenetre):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 break
+        if (detect_win(list_tab[0:3], list_tab[3:6], list_tab[6:10]) == True): break
         gestion_game_list = gestion_game(score_tab, rect_tab, list_tab, font)
         score_tab = gestion_game_list[0]
         list_tab = gestion_game_list[1]
         display(rect_tab, fenetre, score_tab)
-        if (detect_win(list_tab[0:3], list_tab[3:6], list_tab[6:10], caract) == True): break
         if (detect_full(list_tab) == True) : break
         pygame.display.flip()
     
